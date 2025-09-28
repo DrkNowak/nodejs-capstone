@@ -3,11 +3,17 @@ const app = express()
 const cors = require('cors')
 require('dotenv').config()
 
+const userRoutes = require('./routes/userRoutes.ts');
+
+app.use('/api/user', userRoutes);
+
 app.use(cors())
 app.use(express.static('public'))
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
+
+app.use(userRoutes);
 
 
 
