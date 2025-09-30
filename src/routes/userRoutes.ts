@@ -12,4 +12,4 @@ router.post('/api/users', (req, res) => {
   res.redirect('/');
 });
 
-module.exports = router;
+export default router;
