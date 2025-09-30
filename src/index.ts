@@ -1,4 +1,5 @@
 import { Express } from 'express';
+import { AddressInfo } from 'net';
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -19,10 +20,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.resolve(__dirname + '/../views/index.html'));
 });
 
-// app.use(userRoutes);
-
 app.use(userRoutes);
 
 const listener = app.listen(process.env.PORT || 3000, () => {
-  // console.log('Your app is listening on port ' + listener.address().port);
+  const listenerAdress = listener.address() as AddressInfo;
+  console.log('Your app is listening on port ' + listenerAdress.port);
 });
