@@ -16,4 +16,6 @@ export async function createUser(username: string) {
   }
 
   insertUser(username.trim());
+
+  return username;
 }

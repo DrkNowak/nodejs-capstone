@@ -5,9 +5,9 @@ export const userController = {
   async createUser(req: Request, res: Response) {
     try {
       const { username } = req.body ?? {};
-      const user = await createUser(username);
+      await createUser(username);
 
-      return res.status(201).json(user);
+      return res.status(201).json({ message: `User: ${username} has been successfully created` });
     } catch (err) {
       if (err instanceof ValidationError) {
         return res.status(400).json({ error: err.message });

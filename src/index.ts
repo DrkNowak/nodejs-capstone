@@ -16,8 +16,8 @@ const app: Express = express();
 initDB();
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// app.use(cors())
-// app.use(express.static('public'))
+app.use(cors());
+app.use(express.static('public'));
 app.get('/', (_, res) => {
   res.sendFile(path.resolve(__dirname + '/../views/index.html'));
 });
