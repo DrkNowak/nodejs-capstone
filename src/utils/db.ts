@@ -29,7 +29,7 @@ export function checkIfUserIsInDB(username: string): Promise<boolean> {
   });
 }
 
-function insertNewUser(username: string) {
+function insertUser(username: string) {
   const stmt = db.prepare('INSERT INTO users (_id, username) VALUES (?, ?)');
 
   stmt.run(uuidv4(), username);
@@ -41,4 +41,4 @@ function killDBConnection() {
   db.close();
 }
 
-export { initDB, insertNewUser, killDBConnection };
+export { initDB, insertUser, killDBConnection };

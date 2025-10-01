@@ -1,15 +1,8 @@
-import { Express } from 'express';
+import { Router } from 'express';
+import { userController } from '../controllers/userController';
 
-const express = require('express');
+export const userRoutes = Router();
 
-const router: Express = express.Router();
-
-router.post('/api/users', (req, res) => {
-  const { body } = req;
-  console.log(req, '');
-  res.status(404).send('Sorry, we cannot find that!');
-
-  res.redirect('/');
+userRoutes.post('/api/users', (req, res) => {
+  userController.createUser(req, res);
 });
-
-export default router;

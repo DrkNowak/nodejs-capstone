@@ -2,7 +2,7 @@ import { Express } from 'express';
 import { AddressInfo } from 'net';
 
 import { initDB } from './utils/db';
-import userRoutes from './routes/userRoutes';
+import { userRoutes } from './routes/userRoutes';
 
 const express = require('express');
 const bodyParser = require('body-parser');
