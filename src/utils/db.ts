@@ -15,12 +15,17 @@ function initDB() {
 
 export function checkIfUserIsInDB(username: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
-    db.get('SELECT * FROM users WHERE username = ?', [username], (err: Error | null, row: unknown) => {
-      if (err) {
-        return reject(err);
+    db.get(
+      'SELECT * FROM users WHERE username = ? COLLATE NOCASE',
+      [username],
+      (err: Error | null, row: { username: string; _id: string }) => {
+        if (err) {
+          return reject(err);
+        }
+
+        resolve(!!row);
       }
-      resolve(!!row);
-    });
+    );
   });
 }
 
