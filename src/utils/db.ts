@@ -13,12 +13,14 @@ function initDB() {
   });
 }
 
-export function checkIfUserIsInDB(username: string, callback: (err: Error | null, exists: boolean | null) => void) {
-  db.get('SELECT * FROM users WHERE username = ?', [username], (err: Error | null, row: any) => {
-    if (err) {
-      return callback(err, null);
-    }
-    callback(null, !!row);
+export function checkIfUserIsInDB(username: string): Promise<boolean> {
+  return new Promise((resolve, reject) => {
+    db.get('SELECT * FROM users WHERE username = ?', [username], (err: Error | null, row: unknown) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(!!row);
+    });
   });
 }
 
@@ -33,3 +35,5 @@ function insertNewUser(username: string) {
 function killDBConnection() {
   db.close();
 }
+
+export { initDB, insertNewUser, killDBConnection };

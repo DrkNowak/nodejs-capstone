@@ -1,6 +1,7 @@
 import { Express } from 'express';
 import { AddressInfo } from 'net';
 
+import { initDB } from './utils/db';
 import userRoutes from './routes/userRoutes';
 
 const express = require('express');
@@ -12,6 +13,7 @@ require('dotenv').config();
 
 const app: Express = express();
 
+initDB();
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // app.use(cors())
