@@ -1,4 +1,4 @@
-import { insertUser, checkIfUserIsInDB } from '../utils/db';
+import { insertUser, checkIfUserIsInDB, listUsers } from '../utils/db';
 
 export class ConflictError extends Error {}
 export class ValidationError extends Error {}
@@ -17,4 +17,8 @@ export async function createUser(username: string) {
   }
 
   return insertUser(username.trim());
+}
+
+export async function getUsers() {
+  return listUsers();
 }

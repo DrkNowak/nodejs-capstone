@@ -13,7 +13,7 @@ function initDB() {
   });
 }
 
-export function checkIfUserIsInDB(username: string): Promise<boolean> {
+function checkIfUserIsInDB(username: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
     db.get(
       'SELECT * FROM users WHERE username = ? COLLATE NOCASE',
@@ -30,18 +30,33 @@ export function checkIfUserIsInDB(username: string): Promise<boolean> {
 }
 
 function insertUser(username: string) {
-  const stmt = db.prepare('INSERT INTO users (_id, username) VALUES (?, ?)');
+  const dbQuery = db.prepare('INSERT INTO users (_id, username) VALUES (?, ?)');
   const _id = uuidv4();
 
-  stmt.run(_id, username);
+  dbQuery.run(_id, username);
 
-  stmt.finalize();
+  dbQuery.finalize();
 
   return { _id, username };
+}
+
+function listUsers(): Promise<{ _id: string; username: string }[]> {
+  return new Promise((resolve, reject) => {
+    const dbQuery = db.prepare('SELECT _id, username FROM users ORDER BY username COLLATE NOCASE ASC');
+
+    dbQuery.all((err: Error | null, rows: { username: string; _id: string }[]) => {
+      dbQuery.finalize();
+
+      if (err) {
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
 }
 
 function killDBConnection() {
   db.close();
 }
 
-export { initDB, insertUser, killDBConnection };
+export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers };

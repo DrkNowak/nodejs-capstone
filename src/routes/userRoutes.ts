@@ -6,3 +6,7 @@ export const userRoutes = Router();
 userRoutes.post('/api/users', (req, res) => {
   userController.createUser(req, res);
 });
+
+userRoutes.get('/api/users', (req, res) => {
+  userController.createUser(req, res);
+});
