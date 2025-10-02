@@ -31,10 +31,13 @@ export function checkIfUserIsInDB(username: string): Promise<boolean> {
 
 function insertUser(username: string) {
   const stmt = db.prepare('INSERT INTO users (_id, username) VALUES (?, ?)');
+  const _id = uuidv4();
 
-  stmt.run(uuidv4(), username);
+  stmt.run(_id, username);
 
   stmt.finalize();
+
+  return { _id, username };
 }
 
 function killDBConnection() {

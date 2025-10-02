@@ -18,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(cors());
 app.use(express.static('public'));
+
 app.get('/', (_, res) => {
   res.sendFile(path.resolve(__dirname + '/../views/index.html'));
 });
@@ -25,6 +26,7 @@ app.get('/', (_, res) => {
 app.use(userRoutes);
 
 const listener = app.listen(process.env.PORT || 3000, () => {
-  const listenerAdress = listener.address() as AddressInfo;
-  console.log('Your app is listening on port ' + listenerAdress.port);
+  const adress = listener.address() as AddressInfo;
+
+  console.log('Your app is listening on port ' + adress.port);
 });
