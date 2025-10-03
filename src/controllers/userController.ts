@@ -24,6 +24,8 @@ export const userController = {
   },
 
   async getUsers(_: any, res: Response) {
-    return res.status(201).json(getUsers());
+    const users = await getUsers();
+
+    return res.status(200).json(users);
   },
 };

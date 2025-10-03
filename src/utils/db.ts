@@ -61,4 +61,12 @@ function killDBConnection() {
   db.close();
 }
 
-export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers };
+function createExercise(userId: string, description: string, duration: number, date: string) {
+  const dbQuery = db.prepare('INSERT INTO exercises (userId, description, duration, date) VALUES (?, ?, ?, ?)');
+
+  dbQuery.run(userId, description, duration, date);
+
+  dbQuery.finalize();
+}
+
+export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers, createExercise };
