@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { createUser, getUsers, ConflictError, ValidationError } from '../services/userService';
-import { User } from '../models/models';
 
 export const userController = {
   async createUser(req: Request, res: Response) {
@@ -23,7 +22,8 @@ export const userController = {
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   },
-  async getUsers(): Promise<User[]> {
-    return getUsers();
+
+  async getUsers(_: any, res: Response) {
+    return res.status(201).json(getUsers());
   },
 };

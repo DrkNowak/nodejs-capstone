@@ -1,3 +1,5 @@
+import { User } from '../models/models';
+
 const { v4: uuidv4 } = require('uuid');
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('user_database.db');
@@ -40,7 +42,7 @@ function insertUser(username: string) {
   return { _id, username };
 }
 
-function listUsers(): Promise<{ _id: string; username: string }[]> {
+function listUsers(): Promise<User[]> {
   return new Promise((resolve, reject) => {
     const dbQuery = db.prepare('SELECT _id, username FROM users ORDER BY username COLLATE NOCASE ASC');
 

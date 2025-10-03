@@ -8,5 +8,5 @@ userRoutes.post('/api/users', (req, res) => {
 });
 
 userRoutes.get('/api/users', (req, res) => {
-  userController.createUser(req, res);
+  userController.getUsers(req, res);
 });

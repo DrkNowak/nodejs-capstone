@@ -1,4 +1,5 @@
 import { insertUser, checkIfUserIsInDB, listUsers } from '../utils/db';
+import { User } from '../models/models';
 
 export class ConflictError extends Error {}
 export class ValidationError extends Error {}
@@ -19,6 +20,6 @@ export async function createUser(username: string) {
   return insertUser(username.trim());
 }
 
-export async function getUsers() {
+export async function getUsers(): Promise<User[]> {
   return listUsers();
 }
