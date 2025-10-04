@@ -4,7 +4,7 @@ type User = {
 };
 
 type Exercise = {
-  username: string;
+  username?: string;
   description: string;
   duration: string;
   date: string;
