@@ -31,6 +31,22 @@ function checkIfUserIsInDB(username: string): Promise<boolean> {
   });
 }
 
+function getUserById(userId: string): Promise<User | null> {
+  return new Promise((resolve, reject) => {
+    db.get(
+      'SELECT * FROM users WHERE _id = ?',
+      [userId],
+      (err: Error | null, row: { username: string; _id: string }) => {
+        if (err) {
+          return reject(err);
+        }
+
+        resolve(row ? { _id: row._id, username: row.username } : null);
+      }
+    );
+  });
+}
+
 function insertUser(username: string) {
   const dbQuery = db.prepare('INSERT INTO users (_id, username) VALUES (?, ?)');
   const _id = uuidv4();
@@ -69,4 +85,4 @@ function createExercise(userId: string, description: string, duration: number, d
   dbQuery.finalize();
 }
 
-export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers, createExercise };
+export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers, createExercise, getUserById };
