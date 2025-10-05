@@ -11,6 +11,14 @@ function initDB() {
       username
     )`);
 
+    db.run(`CREATE TABLE IF NOT EXISTS exercises (
+      _id PRIMARY KEY,
+      userId,
+      description,
+      duration,
+      date
+    )`);
+
     return db;
   });
 }
