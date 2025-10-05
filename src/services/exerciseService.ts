@@ -1,6 +1,6 @@
 import { Exercise } from '../models/models.js';
 
-export const createExercise = async ({ _id, description, duration, date }: Exercise) => {
+export async function createExercise({ _id, description, duration, date }: Exercise): Promise<Exercise> {
   const newExercise = { _id, description, duration, date };
 
   switch (true) {
@@ -18,7 +18,7 @@ export const createExercise = async ({ _id, description, duration, date }: Exerc
   }
 
   return newExercise;
-};
+}
 
 // export const getExercises = async (userId) => {
 //   const exercises = await Exercise.find({ userId });

@@ -1,12 +1,13 @@
 import { Exercise } from '../models/models.js';
 import { Request, Response } from 'express';
 import { createExercise } from '../services/exerciseService';
-import { ValidationError } from '../services/userService.js';
+import { ValidationError } from '../services/userService';
 
 export const exerciseController = {
   async createExercise(req: Request, res: Response) {
     try {
-      const { _id, description, duration, date } = req.body ?? {};
+      const { description, duration, date } = req.body ?? {};
+      const { _id } = req.params;
       const newExercise = await createExercise({ _id, description, duration, date });
 
       return res.status(201).json(newExercise);
