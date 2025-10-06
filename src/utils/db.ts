@@ -12,7 +12,8 @@ function initDB() {
     )`);
 
     db.run(`CREATE TABLE IF NOT EXISTS exercises (
-      _id PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      _id,
       userId,
       description,
       duration,
@@ -85,12 +86,14 @@ function killDBConnection() {
   db.close();
 }
 
-function createExercise(userId: string, description: string, duration: number, date: string) {
-  const dbQuery = db.prepare('INSERT INTO exercises (userId, description, duration, date) VALUES (?, ?, ?, ?)');
+function insertExercise(_id: string, description: string, duration: number, date: string) {
+  const dbQuery = db.prepare('INSERT INTO exercises (_id, description, duration, date) VALUES (?, ?, ?, ?)');
 
-  dbQuery.run(userId, description, duration, date);
+  dbQuery.run(_id, description, duration, date);
 
   dbQuery.finalize();
+
+  return { _id, description, duration, date };
 }
 
-export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers, createExercise, getUserById };
+export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers, insertExercise, getUserById };

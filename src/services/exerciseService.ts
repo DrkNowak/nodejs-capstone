@@ -1,4 +1,5 @@
 import { Exercise } from '../models/models.js';
+import { insertExercise } from '../utils/db';
 
 export async function createExercise({ _id, description, duration, date }: Exercise): Promise<Exercise> {
   const newExercise = { _id, description, duration, date };
@@ -17,7 +18,7 @@ export async function createExercise({ _id, description, duration, date }: Exerc
       throw new Error('Date must be in YYYY-MM-DD format');
   }
 
-  return newExercise;
+  return insertExercise(newExercise._id, newExercise.description, newExercise.duration, newExercise.date);
 }
 
 // export const getExercises = async (userId) => {

@@ -6,7 +6,7 @@ type User = {
 type Exercise = {
   username?: string;
   description: string;
-  duration: string;
+  duration: number;
   date: string;
   _id: string;
 };
