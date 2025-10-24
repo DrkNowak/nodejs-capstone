@@ -56,15 +56,23 @@ function getUserById(userId: string): Promise<User | null> {
   });
 }
 
-function insertUser(username: string) {
-  const dbQuery = db.prepare('INSERT INTO users (_id, username) VALUES (?, ?)');
-  const _id = uuidv4();
+async function insertUser(username: string): Promise<User> {
+  try {
+    const _id = uuidv4();
 
-  dbQuery.run(_id, username);
+    await new Promise<void>((resolve, reject) => {
+      const dbQuery = db.prepare('INSERT INTO users (_id, username) VALUES (?, ?)');
+      dbQuery.run(_id, username, (err: Error | null) => {
+        dbQuery.finalize();
+        if (err) return reject(err);
+        resolve();
+      });
+    });
 
-  dbQuery.finalize();
-
-  return { _id, username };
+    return { _id, username };
+  } catch (error) {
+    throw error;
+  }
 }
 
 function listUsers(): Promise<User[]> {
@@ -86,6 +94,24 @@ function killDBConnection() {
   db.close();
 }
 
+async function removeUser(username: string): Promise<string> {
+  try {
+    await new Promise<void>((resolve, reject) => {
+      const dbQuery = db.prepare('DELETE FROM users WHERE username = ? COLLATE NOCASE');
+
+      dbQuery.run(username, (err: Error | null) => {
+        dbQuery.finalize();
+        if (err) return reject(err);
+        resolve();
+      });
+    });
+
+    return username;
+  } catch (error) {
+    throw error;
+  }
+}
+
 function insertExercise(_id: string, description: string, duration: number, date: string) {
   const dbQuery = db.prepare('INSERT INTO exercises (_id, description, duration, date) VALUES (?, ?, ?, ?)');
 
@@ -94,16 +120,6 @@ function insertExercise(_id: string, description: string, duration: number, date
   dbQuery.finalize();
 
   return { _id, description, duration, date };
-}
-
-function removeUser(username: string) {
-  const dbQuery = db.prepare('DELETE FROM users WHERE username = ? COLLATE NOCASE');
-
-  dbQuery.run(username);
-
-  dbQuery.finalize();
-
-  return username;
 }
 
 export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers, insertExercise, getUserById, removeUser };
