@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { userController } from '../controllers/userController';
-import { exerciseController } from '../controllers/exerciseController';
 
 export const userRoutes = Router();
 
@@ -12,9 +11,6 @@ userRoutes.get('/api/users', (req, res) => {
   userController.getUsers(req, res);
 });
 
-userRoutes.post('/api/users/:_id/exercises', (req, res) => {
-  exerciseController.createExercise(req, res);
-});
 
 userRoutes.delete('/api/users', (req, res) => {
   userController.deleteUser(req, res);

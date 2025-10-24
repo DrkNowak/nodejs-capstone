@@ -3,6 +3,7 @@ import { AddressInfo } from 'net';
 
 import { initDB } from './utils/db';
 import { userRoutes } from './routes/userRoutes';
+import { exerciseRoutes } from './routes/exerciseRoutes';
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -24,6 +25,7 @@ app.get('/', (_, res) => {
 });
 
 app.use(userRoutes);
+app.use(exerciseRoutes);
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   const adress = listener.address() as AddressInfo;
