@@ -96,4 +96,14 @@ function insertExercise(_id: string, description: string, duration: number, date
   return { _id, description, duration, date };
 }
 
-export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers, insertExercise, getUserById };
+function removeUser(username: string) {
+  const dbQuery = db.prepare('DELETE FROM users WHERE username = ? COLLATE NOCASE');
+
+  dbQuery.run(username);
+
+  dbQuery.finalize();
+
+  return username;
+}
+
+export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers, insertExercise, getUserById, removeUser };

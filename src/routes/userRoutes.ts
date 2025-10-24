@@ -15,3 +15,7 @@ userRoutes.get('/api/users', (req, res) => {
 userRoutes.post('/api/users/:_id/exercises', (req, res) => {
   exerciseController.createExercise(req, res);
 });
+
+userRoutes.delete('/api/users', (req, res) => {
+  userController.deleteUser(req, res);
+});

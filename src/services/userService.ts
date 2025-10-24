@@ -1,4 +1,4 @@
-import { insertUser, checkIfUserIsInDB, listUsers } from '../utils/db';
+import { insertUser, checkIfUserIsInDB, removeUser, listUsers } from '../utils/db';
 import { User } from '../models/models';
 
 export class ConflictError extends Error {}
@@ -22,4 +22,12 @@ export async function createUser(username: string) {
 
 export async function getUsers(): Promise<User[]> {
   return listUsers();
+}
+
+export async function deleteUser(username: string): Promise<void> {
+  if (!username || typeof username !== 'string') {
+    throw new ValidationError('Username is required.');
+  }
+
+  removeUser(username);
 }

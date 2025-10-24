@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createUser, getUsers, ConflictError, ValidationError } from '../services/userService';
+import { createUser, getUsers, ConflictError, ValidationError, deleteUser } from '../services/userService';
 
 export const userController = {
   async createUser(req: Request, res: Response) {
@@ -27,5 +27,23 @@ export const userController = {
     const users = await getUsers();
 
     return res.status(200).json(users);
+  },
+
+  async deleteUser(req: Request, res: Response) {
+    try {
+      const { username } = req.body ?? {};
+
+      await deleteUser(username);
+
+      return res.status(204).send();
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        return res.status(400).json({ error: err.message });
+      }
+
+      console.error('Unexpected error in deleteUser:', err);
+
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
   },
 };
