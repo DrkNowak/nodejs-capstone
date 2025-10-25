@@ -4,23 +4,34 @@ const { v4: uuidv4 } = require('uuid');
 const sqlite3 = require('sqlite3');
 const db = new sqlite3.Database('user_database.db');
 
-function initDB() {
-  db.serialize(() => {
-    db.run(`CREATE TABLE IF NOT EXISTS users (
-      _id PRIMARY KEY,
-      username
-    )`);
+function initDB(): Promise<typeof db> {
+  return new Promise((resolve, reject) => {
+    db.serialize(() => {
+      db.run(
+        `CREATE TABLE IF NOT EXISTS users (
+          _id PRIMARY KEY,
+          username
+        )`,
+        (err: Error | null) => {
+          if (err) return reject(err);
 
-    db.run(`CREATE TABLE IF NOT EXISTS exercises (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      _id,
-      userId,
-      description,
-      duration,
-      date
-    )`);
-
-    return db;
+          db.run(
+            `CREATE TABLE IF NOT EXISTS exercises (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              _id,
+              userId,
+              description,
+              duration,
+              date
+            )`,
+            (err2: Error | null) => {
+              if (err2) return reject(err2);
+              resolve(db);
+            }
+          );
+        }
+      );
+    });
   });
 }
 
@@ -112,14 +123,27 @@ async function removeUser(username: string): Promise<string> {
   }
 }
 
-function insertExercise(_id: string, description: string, duration: number, date: string) {
-  const dbQuery = db.prepare('INSERT INTO exercises (_id, description, duration, date) VALUES (?, ?, ?, ?)');
+async function insertExercise(
+  _id: string,
+  description: string,
+  duration: number,
+  date: string
+): Promise<{ _id: string; description: string; duration: number; date: string }> {
+  try {
+    await new Promise<void>((resolve, reject) => {
+      const dbQuery = db.prepare('INSERT INTO exercises (_id, description, duration, date) VALUES (?, ?, ?, ?)');
 
-  dbQuery.run(_id, description, duration, date);
+      dbQuery.run(_id, description, duration, date, (err: Error | null) => {
+        dbQuery.finalize();
+        if (err) return reject(err);
+        resolve();
+      });
+    });
 
-  dbQuery.finalize();
-
-  return { _id, description, duration, date };
+    return { _id, description, duration, date };
+  } catch (error) {
+    throw error;
+  }
 }
 
 export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers, insertExercise, getUserById, removeUser };
