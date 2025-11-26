@@ -146,4 +146,34 @@ async function insertExercise(
   }
 }
 
-export { initDB, insertUser, checkIfUserIsInDB, killDBConnection, listUsers, insertExercise, getUserById, removeUser };
+async function getExercisesByUserId(
+  userId: string
+): Promise<{ _id: string; description: string; duration: number; date: string }[]> {
+  return new Promise((resolve, reject) => {
+    const dbQuery = db.prepare('SELECT _id, description, duration, date FROM exercises WHERE _id = ?');
+
+    dbQuery.all(
+      userId,
+      (err: Error | null, rows: { _id: string; description: string; duration: number; date: string }[]) => {
+        dbQuery.finalize();
+
+        if (err) {
+          return reject(err);
+        }
+        resolve(rows);
+      }
+    );
+  });
+}
+
+export {
+  initDB,
+  insertUser,
+  checkIfUserIsInDB,
+  killDBConnection,
+  listUsers,
+  insertExercise,
+  getUserById,
+  removeUser,
+  getExercisesByUserId,
+};

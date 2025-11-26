@@ -1,5 +1,5 @@
 import { Exercise } from '../models/models.js';
-import { insertExercise } from '../utils/db';
+import { insertExercise, getExercisesByUserId } from '../utils/db';
 
 export async function createExercise({ _id, description, duration, date }: Exercise): Promise<Exercise> {
   const newExercise = { _id, description, duration, date };
@@ -21,7 +21,8 @@ export async function createExercise({ _id, description, duration, date }: Exerc
   return insertExercise(newExercise._id, newExercise.description, newExercise.duration, newExercise.date);
 }
 
-// export const getExercises = async (userId) => {
-//   const exercises = await Exercise.find({ userId });
-//   return exercises;
-// };
+export const getExercises = async (userId: string) => {
+  const exercises = await getExercisesByUserId(userId);
+
+  return exercises;
+};

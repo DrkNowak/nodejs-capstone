@@ -1,6 +1,6 @@
 import { Exercise } from '../models/models.js';
 import { Request, Response } from 'express';
-import { createExercise } from '../services/exerciseService';
+import { createExercise, getExercises } from '../services/exerciseService';
 import { ValidationError } from '../services/userService';
 
 export const exerciseController = {
@@ -22,10 +22,10 @@ export const exerciseController = {
     }
   },
 
-  // async getExercises(req: Request, res: Response) {
-  //   const { userId } = req.params;
-  //   const exercises = await getExercises(userId);
+  async getExercises(req: Request, res: Response) {
+    const { userId } = req.params;
+    const exercises = await getExercises(userId);
 
-  //   return res.status(200).json(exercises);
-  // },
+    return res.status(200).json(exercises);
+  },
 };
