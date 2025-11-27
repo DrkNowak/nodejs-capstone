@@ -23,9 +23,19 @@ export const exerciseController = {
   },
 
   async getExercises(req: Request, res: Response) {
-    const { userId } = req.params;
-    const exercises = await getExercises(userId);
+    try {
+      const { _id } = req.params;
+      const exercises = await getExercises(_id);
 
-    return res.status(200).json(exercises);
+      return res.status(200).json(exercises);
+    } catch (err) {
+      if (err instanceof ValidationError) {
+        return res.status(400).json({ error: err.message });
+      }
+
+      console.error('Unexpected error in getExercises:', err);
+
+      return res.status(500).json({ error: 'Internal Server Error' });
+    }
   },
 };
