@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { createUser, getUsers, ConflictError, ValidationError, deleteUser } from '../services/userService';
+import { ConflictError, ValidationError } from '../services/errors';
+import { createUser, getUsers, deleteUser } from '../services/userService';
 
 export const userController = {
   async createUser(req: Request, res: Response) {

@@ -1,7 +1,7 @@
 import { Exercise } from '../models/models.js';
 import { Request, Response } from 'express';
+import { ValidationError } from '../services/errors';
 import { createExercise, getExercises } from '../services/exerciseService';
-import { ValidationError } from '../services/userService';
 
 export const exerciseController = {
   async createExercise(req: Request, res: Response) {

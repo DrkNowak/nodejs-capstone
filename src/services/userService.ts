@@ -1,8 +1,6 @@
 import { insertUser, checkIfUserIsInDB, removeUser, listUsers } from '../utils/db';
+import { ConflictError, ValidationError } from './errors';
 import { User } from '../models/models';
-
-export class ConflictError extends Error {}
-export class ValidationError extends Error {}
 
 export async function createUser(username: string) {
   if (!username || typeof username !== 'string') {

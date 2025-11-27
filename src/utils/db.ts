@@ -19,7 +19,6 @@ function initDB(): Promise<typeof db> {
             `CREATE TABLE IF NOT EXISTS exercises (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               _id,
-              userId,
               description,
               duration,
               date
