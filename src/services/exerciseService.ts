@@ -44,6 +44,7 @@ export async function createExercise({ _id, description, duration, date }: Exerc
   return {
     _id: user._id,
     username: user.username,
-    exercises: exercises || [],
+    exercises: exercises ?? [],
+    count: exercises?.length ?? 0,
   };
 }
