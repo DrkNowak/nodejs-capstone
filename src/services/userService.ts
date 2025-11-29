@@ -1,4 +1,4 @@
-import { insertUser, checkIfUserIsInDB, removeUser, listUsers } from '../utils/db';
+import { insertUser, checkIfUserIsInDB, removeUser, listUsers } from '../database';
 import { ConflictError, ValidationError } from './errors';
 import { User } from '../models/models';
 

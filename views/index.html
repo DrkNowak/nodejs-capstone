@@ -56,8 +56,6 @@
       });
 
       logForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        e.preventDefault();
         const userId = document.getElementById('uid-log').value.trim();
         const params = new URLSearchParams();
 
@@ -67,9 +65,8 @@
         });
 
         const query = params.toString();
-        logForm.action = query ? `/api/users/${userId}/logs?${query}` : `/api/users/${userId}/logs`;
 
-        console.log('asdasda,' + query, logForm.action, logForm);
+        logForm.action = query ? `/api/users/${userId}/logs?${query}` : `/api/users/${userId}/logs`;
         logForm.submit();
       });
     </script>

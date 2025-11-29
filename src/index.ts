@@ -1,7 +1,7 @@
 import { Express } from 'express';
 import { AddressInfo } from 'net';
 
-import { initDB } from './utils/db';
+import { initDB } from './database';
 import { userRoutes } from './routes/userRoutes';
 import { exerciseRoutes } from './routes/exerciseRoutes';
 
