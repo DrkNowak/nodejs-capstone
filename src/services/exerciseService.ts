@@ -1,15 +1,44 @@
 import { Exercise } from '../models/models.js';
 import { insertExercise, getExercisesByUserId, getUserById } from '../utils/db';
+import { toIsoDate } from '../utils/date';
 import { ValidationError } from './errors';
 
-export const getExercises = async (userId: string) => {
+export const getExercises = async (
+  userId: string,
+  { from, to, limit }: { from?: string; to?: string; limit?: string | number } = {}
+) => {
   if (!userId) {
     throw new ValidationError('User ID is required');
   }
 
-  const exercises = await getExercisesByUserId(userId);
+  const user = await getUserById(userId);
 
-  return exercises;
+  if (!user) {
+    throw new ValidationError('User not found');
+  }
+
+  const isoFrom = toIsoDate(from);
+  const isoTo = toIsoDate(to);
+  const parsedLimit = typeof limit === 'string' ? Number(limit) : limit;
+
+  if (parsedLimit !== undefined && (isNaN(Number(parsedLimit)) || Number(parsedLimit) < 0)) {
+    throw new ValidationError('Limit must be a positive number');
+  }
+
+  const exercises = await getExercisesByUserId(userId, isoFrom, isoTo, parsedLimit);
+
+  const log = exercises.map((exercise) => ({
+    description: exercise.description,
+    duration: exercise.duration,
+    date: exercise.date,
+  }));
+
+  return {
+    username: user.username,
+    _id: user._id,
+    count: log.length,
+    log,
+  };
 };
 
 export async function createExercise({ _id, description, duration, date }: Exercise) {
@@ -35,16 +64,17 @@ export async function createExercise({ _id, description, duration, date }: Exerc
 
   const durationNumber = Number(duration);
   const exerciseDate = date ? new Date(date) : new Date();
-  const formattedDate = exerciseDate.toDateString();
+  const isoDate = toIsoDate(exerciseDate);
 
-  await insertExercise(_id, description, durationNumber, formattedDate);
+  if (!isoDate) return;
 
-  const exercises = await getExercisesByUserId(_id);
+  await insertExercise(_id, description, durationNumber, isoDate);
 
   return {
     _id: user._id,
     username: user.username,
-    exercises: exercises ?? [],
-    count: exercises?.length ?? 0,
+    date: isoDate,
+    duration: durationNumber,
+    description,
   };
 }
