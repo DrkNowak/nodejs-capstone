@@ -173,7 +173,7 @@ async function getExercisesByUserId(
       query += ' LIMIT ?';
       params.push(limit);
     }
-    console.log(query, params);
+
     db.all(
       query,
       params,
