@@ -19,6 +19,15 @@
       <form action="/api/users" method="get">
         <input type="submit" value="Get users" />
       </form>
+      <form action="/api/users/:_id/logs" method="get" id="log-form">
+        <h2>Get User's Exercise Log</h2>
+        <p><code>GET /api/users/:_id/logs?[from][&amp;to][&amp;limit]</code></p>
+        <input id="uid-log" type="text" placeholder=":_id" />
+        <input id="from" type="text" name="from" placeholder="from (yyyy-mm-dd)" />
+        <input id="to" type="text" name="to" placeholder="to (yyyy-mm-dd)" />
+        <input id="limit" type="text" name="limit" placeholder="limit" />
+        <input type="submit" value="Submit" />
+      </form>
       <form action="/api/users/:_id/exercises" id="exercise-form" method="post">
         <h2>Add exercises</h2>
         <p><code>POST /api/users/:_id/exercises</code></p>
@@ -37,12 +46,31 @@
     </div>
     <script>
       const exerciseForm = document.getElementById('exercise-form');
+      const logForm = document.getElementById('log-form');
 
       exerciseForm.addEventListener('submit', () => {
         const userId = document.getElementById('uid').value;
         exerciseForm.action = `/api/users/${userId}/exercises`;
 
         exerciseForm.submit();
+      });
+
+      logForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        e.preventDefault();
+        const userId = document.getElementById('uid-log').value.trim();
+        const params = new URLSearchParams();
+
+        ['from', 'to', 'limit'].forEach((field) => {
+          const value = document.getElementById(field).value.trim();
+          if (value) params.append(field, value);
+        });
+
+        const query = params.toString();
+        logForm.action = query ? `/api/users/${userId}/logs?${query}` : `/api/users/${userId}/logs`;
+
+        console.log('asdasda,' + query, logForm.action, logForm);
+        logForm.submit();
       });
     </script>
   </body>

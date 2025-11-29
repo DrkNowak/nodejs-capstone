@@ -25,7 +25,12 @@ export const exerciseController = {
   async getExercises(req: Request, res: Response) {
     try {
       const { _id } = req.params;
-      const exercises = await getExercises(_id);
+      const { from, to, limit } = req.query;
+      const exercises = await getExercises(_id, {
+        from: typeof from === 'string' ? from : undefined,
+        to: typeof to === 'string' ? to : undefined,
+        limit: typeof limit === 'string' || typeof limit === 'number' ? limit : undefined,
+      });
 
       return res.status(200).json(exercises);
     } catch (err) {
