@@ -1,6 +1,5 @@
-import { Exercise } from '../models/models.js';
 import { Request, Response } from 'express';
-import { ValidationError } from '../services/errors';
+import { ValidationError } from '../common/errors';
 import { createExercise, getExercises } from '../services/exerciseService';
 
 export const exerciseController = {

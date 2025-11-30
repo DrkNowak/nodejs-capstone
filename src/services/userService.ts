@@ -1,5 +1,5 @@
 import { insertUser, checkIfUserIsInDB, removeUser, listUsers } from '../database';
-import { ConflictError, ValidationError } from './errors';
+import { ConflictError, ValidationError } from '../common/errors';
 import { User } from '../models/models';
 
 export async function createUser(username: string) {

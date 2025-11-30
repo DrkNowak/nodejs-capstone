@@ -1,7 +1,7 @@
 import { Exercise } from '../models/models.js';
 import { insertExercise, getExercisesByUserId, getUserById } from '../database';
 import { toIsoDate } from '../utils/date';
-import { ValidationError } from './errors';
+import { ValidationError } from '../common/errors';
 
 export const getExercises = async (
   userId: string,

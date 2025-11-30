@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ConflictError, ValidationError } from '../services/errors';
+import { ConflictError, ValidationError } from '../common/errors';
 import { createUser, getUsers, deleteUser } from '../services/userService';
 
 export const userController = {
