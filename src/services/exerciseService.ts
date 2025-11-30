@@ -1,12 +1,10 @@
 import { Exercise } from '../models/models.js';
 import { insertExercise, getExercisesByUserId, getUserById } from '../database';
-import { toIsoDate } from '../utils/date';
+import { toIsoDate } from '../common/utils/date';
 import { ValidationError } from '../common/errors';
+import { GetExercisesParams } from '../common/types/requestParams';
 
-export const getExercises = async (
-  userId: string,
-  { from, to, limit }: { from?: string; to?: string; limit?: string | number } = {}
-) => {
+export const getExercises = async ({ userId, from, to, limit }: GetExercisesParams) => {
   if (!userId) {
     throw new ValidationError('User ID is required');
   }
@@ -19,18 +17,18 @@ export const getExercises = async (
 
   const isoFrom = toIsoDate(from);
   const isoTo = toIsoDate(to);
-  const parsedLimit = typeof limit === 'string' ? Number(limit) : limit;
+  const parsedLimit = Number(limit);
 
-  if (parsedLimit !== undefined && (isNaN(Number(parsedLimit)) || Number(parsedLimit) < 0)) {
+  if (isNaN(parsedLimit) || parsedLimit < 1) {
     throw new ValidationError('Limit must be a positive number');
   }
 
-  const exercises = await getExercisesByUserId(userId, isoFrom, isoTo, parsedLimit);
+  const exercises = await getExercisesByUserId({ userId, from: isoFrom, to: isoTo, limit: parsedLimit });
 
-  const log = exercises.map((exercise) => ({
-    description: exercise.description,
-    duration: exercise.duration,
-    date: exercise.date,
+  const log = exercises.map(({ description, duration, date }) => ({
+    description,
+    duration,
+    date,
   }));
 
   return {
@@ -68,7 +66,7 @@ export async function createExercise({ _id, description, duration, date }: Exerc
 
   if (!isoDate) return;
 
-  await insertExercise(_id, description, durationNumber, isoDate);
+  await insertExercise({ _id, description, duration: durationNumber, date: isoDate });
 
   return {
     _id: user._id,

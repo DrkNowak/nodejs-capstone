@@ -1,11 +1,8 @@
 import { db } from './connection';
+import { Exercise } from '../models/models';
+import { GetExercisesParams } from '../common/types/requestParams';
 
-async function insertExercise(
-  _id: string,
-  description: string,
-  duration: number,
-  date: string
-): Promise<{ _id: string; description: string; duration: number; date: string }> {
+async function insertExercise({ _id, description, duration, date }: Exercise): Promise<Exercise> {
   try {
     await new Promise<void>((resolve, reject) => {
       const dbQuery = db.prepare('INSERT INTO exercises (_id, description, duration, date) VALUES (?, ?, ?, ?)');
@@ -23,12 +20,7 @@ async function insertExercise(
   }
 }
 
-async function getExercisesByUserId(
-  userId: string,
-  from?: string,
-  to?: string,
-  limit?: number
-): Promise<{ _id: string; description: string; duration: number; date: string }[]> {
+async function getExercisesByUserId({ userId, from, to, limit }: GetExercisesParams): Promise<Exercise[]> {
   return new Promise((resolve, reject) => {
     const conditions = ['_id = ?'];
     const params: (string | number)[] = [userId];
@@ -43,23 +35,21 @@ async function getExercisesByUserId(
       params.push(to);
     }
 
-    let query = `SELECT _id, description, duration, date FROM exercises WHERE ${conditions.join(' AND ')} ORDER BY date ASC`;
+    let query = `SELECT _id, description, duration, date FROM exercises WHERE ${conditions.join(
+      ' AND '
+    )} ORDER BY date ASC`;
 
     if (limit) {
       query += ' LIMIT ?';
       params.push(limit);
     }
 
-    db.all(
-      query,
-      params,
-      (err: Error | null, rows: { _id: string; description: string; duration: number; date: string }[]) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve(rows);
+    db.all(query, params, (err: Error | null, rows: Exercise[]) => {
+      if (err) {
+        return reject(err);
       }
-    );
+      resolve(rows);
+    });
   });
 }
 

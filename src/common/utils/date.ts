@@ -1,4 +1,4 @@
-import { ValidationError } from '../common/errors';
+import { ValidationError } from '../errors';
 
 export const toIsoDate = (value?: string | Date) => {
   if (!value) return;

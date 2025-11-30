@@ -22,13 +22,15 @@ export const exerciseController = {
   },
 
   async getExercises(req: Request, res: Response) {
+    const { _id } = req.params;
+    const { from, to, limit } = req.query;
+
     try {
-      const { _id } = req.params;
-      const { from, to, limit } = req.query;
-      const exercises = await getExercises(_id, {
+      const exercises = await getExercises({
+        userId: _id,
         from: typeof from === 'string' ? from : undefined,
         to: typeof to === 'string' ? to : undefined,
-        limit: typeof limit === 'string' || typeof limit === 'number' ? limit : undefined,
+        limit: isNaN(Number(limit)) ? undefined : Number(limit),
       });
 
       return res.status(200).json(exercises);
