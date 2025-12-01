@@ -4,11 +4,10 @@ type User = {
 };
 
 type Exercise = {
-  username?: string;
+  _id: string;
   description: string;
   duration: number;
   date: string;
-  _id: string;
 };
 
 type Task = {
@@ -18,8 +17,8 @@ type Task = {
 };
 
 type Log = {
-  username: string;
   _id: string;
+  username?: string;
   count: number;
   log: Task[];
 };

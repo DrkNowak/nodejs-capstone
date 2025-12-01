@@ -1,4 +1,4 @@
-import { User } from '../models/models';
+import type { User } from '../common/types/model';
 import { db } from './connection';
 
 const { v4: uuidv4 } = require('uuid');

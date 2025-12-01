@@ -1,6 +1,6 @@
 import { insertUser, checkIfUserIsInDB, removeUser, listUsers } from '../database';
 import { ConflictError, ValidationError } from '../common/errors';
-import { User } from '../models/models';
+import type { User } from '../common/types/model';
 
 export async function createUser(username: string) {
   if (!username || typeof username !== 'string') {

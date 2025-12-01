@@ -1,5 +1,5 @@
 import { db } from './connection';
-import { Exercise } from '../models/models';
+import type { Exercise } from '../common/types/model';
 import { GetExercisesParams } from '../common/types/requestParams';
 
 async function insertExercise({ _id, description, duration, date }: Exercise): Promise<Exercise> {

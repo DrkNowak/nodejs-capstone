@@ -1,4 +1,4 @@
-import { Exercise } from '../models/models.js';
+import type { Exercise } from '../common/types/model';
 import { insertExercise, getExercisesByUserId, getUserById } from '../database';
 import { toIsoDate } from '../common/utils/date';
 import { ValidationError } from '../common/errors';
