@@ -19,7 +19,7 @@ export const getExercises = async ({ userId, from, to, limit }: GetExercisesPara
   const isoTo = toIsoDate(to);
   const parsedLimit = Number(limit);
 
-  if (isNaN(parsedLimit) || parsedLimit < 1) {
+  if (parsedLimit && (isNaN(parsedLimit) || parsedLimit < 1)) {
     throw new ValidationError('Limit must be a positive number');
   }
 

@@ -9,7 +9,9 @@ async function insertExercise({ _id, description, duration, date }: Exercise): P
 
       dbQuery.run(_id, description, duration, date, (err: Error | null) => {
         dbQuery.finalize();
+
         if (err) return reject(err);
+
         resolve();
       });
     });
