@@ -45,10 +45,10 @@ export async function createExercise({ _id, description, duration, date }: Exerc
       throw new ValidationError('User ID is required');
 
     case !description || typeof description !== 'string':
-      throw new ValidationError('Description is required and must be a string');
+      throw new ValidationError('Description must be a string');
 
     case !duration || isNaN(Number(duration)):
-      throw new ValidationError('Duration is required and must be a number');
+      throw new ValidationError('Duration must be a number');
 
     case date && isNaN(Date.parse(date)):
       throw new ValidationError('Date must be in YYYY-MM-DD format');
